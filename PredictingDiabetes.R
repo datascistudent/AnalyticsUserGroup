@@ -88,7 +88,7 @@ Y      <- c(442, 58, 113, 155)
 df <- data.frame(ActualOutcome, PredictedOutcome, Y)
 
 ggplot(data =  df, mapping = aes(x = ActualOutcome, y = PredictedOutcome)) +
-  geom_tile(aes(fill = Y), colour = "white") +
-  geom_text(aes(label = sprintf("%1.0f", Y)), vjust = 1, fontface = 'bold', color = 'white', size=10) +
-  scale_fill_gradient(low = "#6D9EC1", high = "#ff8080") +
-  theme_bw() + theme(legend.position = "none")
+    geom_tile(aes(fill = Y), colour = "white") +
+    geom_text(aes(label = sprintf("%1.0f", Y)), vjust = 1, fontface = 'bold', color = 'white', size=10) +
+    scale_fill_gradient(low = "#6D9EC1", high = "#ff8080") +
+    theme_bw() + theme(legend.position = "none") + theme(axis.text = element_text(size=20)) + theme(axis.title = element_text(size=20,face="bold"))
