@@ -92,3 +92,36 @@ ggplot(data =  df, mapping = aes(x = ActualOutcome, y = PredictedOutcome)) +
     geom_text(aes(label = sprintf("%1.0f", Y)), vjust = 1, fontface = 'bold', color = 'white', size=10) +
     scale_fill_gradient(low = "#6D9EC1", high = "#ff8080") +
     theme_bw() + theme(legend.position = "none") + theme(axis.text = element_text(size=20)) + theme(axis.title = element_text(size=20,face="bold"))
+
+
+
+#Trying out Classification Trees on PIMA dataset
+install.packages("rpart")
+install.packages("rpart.plot")
+require(rpart)
+require("rpart.plot")
+
+#Building the rpart model
+rpart.fit <- rpart(Outcome~.,data=pimaimpute)
+
+#Plot the Decision Tree
+prp(rpart.fit, faclen = 0, box.palette = "auto", branch.type = 5, cex = 1)
+
+#Predicting with the model built
+rpart.pred <- predict(rpart.fit, data=pimaimpute, type = "class")
+
+#Building Confusion Matrix
+confmat <- table(rpart.pred, pimaimpute$Outcome)
+sum(diag(confmat)/sum(confmat))
+
+#Visualize the Confusion Matrix - Decision Tree
+ActualOutcomeDT <- factor(c(0, 0, 1, 1))
+PredictedOutcomeDT <- factor(c(0, 1, 0, 1))
+Y      <- c(449, 51, 72, 196)
+df <- data.frame(ActualOutcomeDT, PredictedOutcomeDT, Y)
+
+ggplot(data =  df, mapping = aes(x = ActualOutcomeDT, y = PredictedOutcomeDT)) +
+  geom_tile(aes(fill = Y), colour = "white") +
+  geom_text(aes(label = sprintf("%1.0f", Y)), vjust = 1, fontface = 'bold', color = 'white', size=10) +
+  scale_fill_gradient(low = "#6D9EC1", high = "#ff8080") +
+  theme_bw() + theme(legend.position = "none") + theme(axis.text = element_text(size=20)) + theme(axis.title = element_text(size=20,face="bold"))
